@@ -1,4 +1,14 @@
-#pragma once
+/**
+ * Author: koderkushy
+ * Date: 2024-04-08
+ * License: CC0
+ * Source: self
+ * Description: performs NTT on a.
+ * Requires that a[i] \in [0, mod) initially.
+ * Status: tested
+ */
+
+ #pragma once
 
 #include "../number-theory/Modpowmine.h"
 #include "../numerical/NttInfo.h"

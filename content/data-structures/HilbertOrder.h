@@ -1,6 +1,12 @@
 /**
- * 
+ * Author: koderkushy
+ * Date: 2024-04-08
+ * License: CC0
+ * Source: self
+ * Description: Returns hilbert curve order of (x, y)
+ * Status: tested
  */
+
 #pragma once
 
 lol hilbertorder (int x, int y) {

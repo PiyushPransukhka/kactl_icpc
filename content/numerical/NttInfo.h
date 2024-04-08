@@ -1,4 +1,13 @@
-#pragma once
+/**
+ * Author: koderkushy
+ * Date: 2024-04-08
+ * License: CC0
+ * Source: self
+ * Description: provides metadata to ntt
+ * Status: tested
+ */
+
+ #pragma once
 
 constexpr std::array primitive_roots {
     std::pair(998244353, 3),    // 23
