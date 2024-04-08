@@ -8,7 +8,7 @@
  * Status: tested
  */
 
- #pragma once
+#pragma once
 
 #include "../number-theory/Modpowmine.h"
 #include "../numerical/NttInfo.h"

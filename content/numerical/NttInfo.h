@@ -7,7 +7,7 @@
  * Status: tested
  */
 
- #pragma once
+#pragma once
 
 constexpr std::array primitive_roots {
     std::pair(998244353, 3),    // 23

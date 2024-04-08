@@ -1,13 +1,13 @@
 /**
  * Author: koderkushy
- * Date: 2019-04-16
+ * Date: 2024-04-08
  * License: CC0
  * Source: self
  * Description: Mint
  * Status: tested
  */
 
- #pragma once
+#pragma once
 
 template<uint32_t kMod>
 class Mint {
