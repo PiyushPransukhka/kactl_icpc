@@ -4,14 +4,12 @@
  * License: CC0
  * Source: self
  * Description: performs NTT on a.
- * Requires that a[i] \in [0, mod) initially.
+ * Inputs must be in [0, mod).
+ * Time: O(N \log N)
  * Status: tested
  */
 
 #pragma once
-
-#include "../number-theory/Modpowmine.h"
-#include "../numerical/NttInfo.h"
 
 template<typename Ntt>
 auto butterfly (std::vector<ll> &a, const bool invert = false) {
