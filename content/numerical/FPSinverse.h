@@ -3,7 +3,8 @@
  * Date: 2024-04-08
  * License: CC0
  * Source: self
- * Description: Inverse of FPS. Ensure p is not empty and p[0] != 0.
+ * Description: Returns $p^{-1}(x)$ such that $p(x)p^{-1}(x) = 1+x^{MAX}q(x)$.
+ * Ensure $p$ is not empty and $p_0 \neq 0$.
  * Status: tested
  */
 

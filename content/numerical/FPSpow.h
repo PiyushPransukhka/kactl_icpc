@@ -3,7 +3,7 @@
  * Date: 2024-04-08
  * License: CC0
  * Source: self
- * Description: First coeffs of (p(x))^e.
+ * Description: First $MAX$ coeffs of $p^e(x)$.
  * Status: tested
  */
 

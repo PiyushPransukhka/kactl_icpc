@@ -3,7 +3,7 @@
  * Date: 2024-04-08
  * License: CC0
  * Source: self
- * Description: First coeffs of log(p(x)). Ensure p is not empty and p[0] == 1.
+ * Description: First $MAX$ coeffs of $\log{p(x)}$. Ensure $p$ is not empty and $p_0 = 1$.
  * Status: tested
  */
 

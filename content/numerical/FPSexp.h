@@ -3,7 +3,7 @@
  * Date: 2024-04-08
  * License: CC0
  * Source: self
- * Description: First coeffs of exp(p(x)). Ensure p is not empty and p[0] == 0.
+ * Description: First $MAX$ coeffs of $\exp{p(x)}$. Ensure $p$ is not empty and $p_0 = 0$.
  * Status: tested
  */
 
