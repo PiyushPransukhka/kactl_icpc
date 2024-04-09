@@ -3,7 +3,7 @@
  * Date: 2024-04-08
  * License: CC0
  * Source: self
- * Description: provides metadata to ntt
+ * Description: Provides metadata to ntt.
  * Status: tested
  */
 
