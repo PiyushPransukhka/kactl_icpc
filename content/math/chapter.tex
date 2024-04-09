@@ -105,7 +105,19 @@ $$l_j(x) = \prod_{i \neq j} \dfrac{x-x_i}{x_j-x_i}$$
 The Lagrange interpolating polynomial corresponding to the values $\{y_0, y_1, \dots y_k\}$ is given as
 $$L(x)=\sum_{j} y_j l_j(x)$$
 
-% \section{Probability theory}
+\section{Generating Functions}
+Multiplication of EGFs $P_r(x) \leftrightarrow p_r^{(n)}$ yields
+$$\prod_{r} P_r(x) \leftrightarrow \sum_{x_1+x_2+\dots x_k=n} \dfrac{n!}{x_1!x_2!\dots x_k!} p_1^{(x_1)}p_2^{(x_2)}\dots p_k^{(x_k)}$$
+Catalan numbers $C(x)=\dfrac{1-\sqrt{1-4x}}{2x}$
+Bell numbers (set partitions) $B(x)=e^{e^x-1}$
+Stirling numbers of the $1^{st}$ kind (# of perms with $k$ cycles)
+$$H(x, y) = (1+x)^y = \sum_n \sum_k \left[{n \atop k}\right] \dfrac{x^n}{n!} y^k$$
+$$H_k(x) = [y^k]H(x, y) = [y^k]\exp{(y \log{(1 + x)})} = \dfrac{(\log{(1+x)})^k}{k!}$$
+Stirling numbers of the $2^{nd}$ kind (set partition into $k$ subsets)
+$$B(x, y) = e^{y(e^x - 1)} = \sum_n \sum_k \left\{{n \atop k}\right\} \dfrac{x^n}{n!} y^k$$
+$$B_k(x) = [y^k]B(x, y) = \dfrac{(e^x - 1)^k}{k!}$$
+
+% \section{Probability theory}	
 % Let $X$ be a discrete random variable with probability $p_X(x)$ of assuming the value $x$. It will then have an expected value (mean) $\mu=\mathbb{E}(X)=\sum_xxp_X(x)$ and variance $\sigma^2=V(X)=\mathbb{E}(X^2)-(\mathbb{E}(X))^2=\sum_x(x-\mathbb{E}(X))^2p_X(x)$ where $\sigma$ is the standard deviation. If $X$ is instead continuous it will have a probability density function $f_X(x)$ and the sums above will instead be integrals with $p_X(x)$ replaced by $f_X(x)$.
 
 % Expectation is linear:
