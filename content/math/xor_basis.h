@@ -9,9 +9,6 @@
 
 #pragma once
 
-
-// check int or long long int
-
 struct Basis {
     int bits = 30; // check
     array<int, 30> basis;  // check
