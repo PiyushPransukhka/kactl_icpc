@@ -20,7 +20,7 @@ int gauss (vector < vector<T> > a, vector<T> & ans) {
         for (int i=row; i<n; ++i){
             if ((a[i][col].val) > (a[sel][col].val))sel = i;
         }
-        if ((a[sel][col]) == 0)continue;  // In case of T = double, change it to if(abs(a[sel][col]) < eps) where eps  = 1e-9.
+        if ((a[sel][col]) == 0)continue;
         for (int i=col; i<=m; ++i){
             swap (a[sel][i], a[row][i]);
         }
