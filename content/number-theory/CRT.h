@@ -4,6 +4,8 @@
  * License: CC0
  * Source: self
  * Description: CRT
+ * NOTE : When $m_1, m_2, \dots$ are not coprime, we take $M = lcm(m_1, m_2,\dots)$ and break $a = a_i (mod m_i)$ into
+ * $a = a_i (mod p_j^n_j)$ for all prime factors $p_j$ of $m_i$ and then proceed similarly.
  * Status: tested
  */
 
@@ -26,6 +28,3 @@ ll crt (vector<Cng> const& cngs) {
     }
     return z;
 }
-
-// NOTE : When $m_1, m_2, \dots$ are not coprime, we take $M = lcm(m_1, m_2,\dots)$ and break $a = a_i (mod m_i)$ into
-// $a = a_i (mod p_j^n_j)$ for all prime factors $p_j$ of $m_i$ and then proceed similarly.
