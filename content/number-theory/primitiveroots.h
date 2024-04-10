@@ -14,20 +14,16 @@ int powmod (int a, int b, int p) {
         else {a = int (a * 1ll * a % p),  b >>= 1;}
     return res;
 }
-
 int find_primitive_root(int p) {
     vector<int> fact;
     int phi = phi(p); // find euler totient of p.
     int n = phi;
     for (int i=2; i*i<=n; ++i)
         if (n % i == 0) {
-            fact.push_back (i);
-            while (n % i == 0)
-                n /= i;
+            fact.push_back(i);
+            while (n % i == 0) n /= i;
         }
-    if (n > 1)
-        fact.push_back (n);
-
+    if (n > 1) fact.push_back (n);
     for (int res=2; res<=p; ++res) {
         bool ok = true;
         for (size_t i=0; i<fact.size() && ok; ++i)
@@ -36,9 +32,9 @@ int find_primitive_root(int p) {
     }
     return -1;
 }
-// g is a primitive root modulo n if and only if the smallest number k for which $ g^k = 1 (mod n) $ is equal to phi(n).
+// g is a primitive root modulo n if and only if the smallest integer k for which $g^k = 1 (mod n)$ is equal to phi(n).
 // Primitive root modulo n exists if and only if:
-// - n  is 1, 2, 4, or
-// - n is power of an odd prime number  $(n = p^k)$, or
-// - n is twice power of an odd prime number  $(n = 2 *(p^k))$
-// The number of primitive roots modulo n is equal to phi(phi(n)).
+// - n is 1, 2, 4, or
+// - n is power of an odd prime number $(n = p^k)$, or
+// - n is twice power of an odd prime number $(n = 2 *(p^k))$
+// The number of primitive roots modulo n is equal to phi(phi(n)).
