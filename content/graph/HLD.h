@@ -1,65 +1,72 @@
 /**
- * Author: Benjamin Qi, Oleksandr Kulkov, chilli
- * Date: 2020-01-12
+ * Author: kingmessi
+ * Date: 2024-04-08
  * License: CC0
- * Source: https://codeforces.com/blog/entry/53170, https://github.com/bqi343/USACO/blob/master/Implementations/content/graphs%20(12)/Trees%20(10)/HLD%20(10.3).h
- * Description: Decomposes a tree into vertex disjoint heavy paths and light
- * edges such that the path from any leaf to the root contains at most log(n)
- * light edges. Code does additive modifications and max queries, but can
- * support commutative segtree modifications/queries on paths and subtrees.
- * Takes as input the full adjacency list. VALS\_EDGES being true means that
- * values are stored in the edges, as opposed to the nodes. All values
- * initialized to the segtree default. Root must be 0.
- * Time: O((\log N)^2)
- * Status: stress-tested against old HLD
+ * Source: self
+ * Description: LCA
+ * Inputs must be in [0, mod).
+ * Time: O(log N) per query
+ * Status: tested
  */
 #pragma once
 
-#include "../data-structures/LazySegmentTree.h"
-
-template <bool VALS_EDGES> struct HLD {
-	int N, tim = 0;
-	vector<vi> adj;
-	vi par, siz, depth, rt, pos;
-	Node *tree;
-	HLD(vector<vi> adj_)
-		: N(sz(adj_)), adj(adj_), par(N, -1), siz(N, 1), depth(N),
-		  rt(N),pos(N),tree(new Node(0, N)){ dfsSz(0); dfsHld(0); }
-	void dfsSz(int v) {
-		if (par[v] != -1) adj[v].erase(find(all(adj[v]), par[v]));
-		for (int& u : adj[v]) {
-			par[u] = v, depth[u] = depth[v] + 1;
-			dfsSz(u);
-			siz[v] += siz[u];
-			if (siz[u] > siz[adj[v][0]]) swap(u, adj[v][0]);
-		}
-	}
-	void dfsHld(int v) {
-		pos[v] = tim++;
-		for (int u : adj[v]) {
-			rt[u] = (u == adj[v][0] ? rt[v] : u);
-			dfsHld(u);
-		}
-	}
-	template <class B> void process(int u, int v, B op) {
-		for (; rt[u] != rt[v]; v = par[rt[v]]) {
-			if (depth[rt[u]] > depth[rt[v]]) swap(u, v);
-			op(pos[rt[v]], pos[v] + 1);
-		}
-		if (depth[u] > depth[v]) swap(u, v);
-		op(pos[u] + VALS_EDGES, pos[v] + 1);
-	}
-	void modifyPath(int u, int v, int val) {
-		process(u, v, [&](int l, int r) { tree->add(l, r, val); });
-	}
-	int queryPath(int u, int v) { // Modify depending on problem
-		int res = -1e9;
-		process(u, v, [&](int l, int r) {
-				res = max(res, tree->query(l, r));
-		});
-		return res;
-	}
-	int querySubtree(int v) { // modifySubtree is similar
-		return tree->query(pos[v] + VALS_EDGES, pos[v] + siz[v]);
-	}
+//euler,seg,hld combined
+const int MX = 2e5+5;
+template<int SZ, bool VALS_IN_EDGES> struct HLD { 
+    int N; vi adj[SZ];
+    int par[SZ], root[SZ], depth[SZ], sz[SZ], ti;
+    int pos[SZ]; vi rpos; // rpos not used but could be useful
+    void ae (int x, int y) { adj[x].pb(y), adj[y].pb(x); }
+    void dfsSz (int x) { 
+        sz[x] = 1; 
+        for(auto& y : adj[x]) {
+            par[y] = x; depth[y] = depth[x]+1;
+            adj[y].erase(find(be(adj[y]),x)); /// remove parent from adj list
+            dfsSz(y); sz[x] += sz[y];
+            if (sz[y] > sz[adj[x][0]]) swap(y,adj[x][0]);
+        }
+    }
+    void dfsHld (int x) {
+        pos[x] = ti++; rpos.pb(x);
+        for(auto y : adj[x]) {
+            root[y] = (y == adj[x][0] ? root[x] : y);
+            dfsHld(y); }
+    }
+    void init (int _N, int R = 0) { N = _N; 
+        par[R] = depth[R] = ti = 0; dfsSz(R); 
+        root[R] = R; dfsHld(R);
+    }
+    void clear () {
+        rep(i,0,N+1){
+            par[i]=0,root[i]=0,depth[i]=0,sz[i]=0,pos[i]=0;
+            adj[i].clear();
+        }
+        ti=0;rpos.clear();
+    }
+    int lca (int x, int y) {
+        for (; root[x] != root[y]; y = par[root[y]])
+            if (depth[root[x]] > depth[root[y]]) swap(x,y);
+        return depth[x] < depth[y] ? x : y;
+    }
+    int dist (int x, int y) { // # edges on path
+        return depth[x]+depth[y]-2*depth[lca(x,y)]; }
+    // [u, v)
+    vector<pii> ascend (int u, int v) const {
+      vector<pii> res;
+      while (root[u] != root[v]) {
+        res.emplace_back(pos[u], pos[root[u]]);
+        u = par[root[u]];
+      }
+      if (u != v) res.emplace_back(pos[u], pos[v] + 1);
+      return res;
+    }
+    // (u, v]
+    vector<pii> descend (int u, int v) const {
+      if (u == v) return {};
+      if (root[u] == root[v]) return {{pos[u] + 1, pos[v]}};
+      auto res = descend(u, par[root[v]]);
+      res.emplace_back(pos[root[v]], pos[v]);
+      return res;
+    }
 };
+HLD<MX,0> hl;
