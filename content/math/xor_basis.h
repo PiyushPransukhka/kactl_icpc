@@ -10,8 +10,8 @@
 #pragma once
 
 struct Basis {
-    int bits = 30; // check
-    array<int, 30> basis;  // check
+    int bits = 30;
+    array<int, 30> basis;
  
     Basis(){
       for(int i=0;i<bits;i++){
