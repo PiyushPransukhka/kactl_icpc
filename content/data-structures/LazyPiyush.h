@@ -4,15 +4,19 @@
  * License: CC0
  * Source: self
  * Description: Lazy segtree
+ * Time: O(\log N) per query 
  * Status: tested
  */
 
 template<typename T>
 struct LazySegmentTree{
     vector<T> st;
-    void done() { st.clear(); }
-    void assign(int n) { st.resize(4*n+1); }
-    ll combine(ll x,ll y) { return x+y; }
+    void assign(int n){
+        st.resize(4*n+1);
+    }
+    ll combine(ll x,ll y){
+        return x+y;         // check which opeartion is to be performed
+    }
     void build(vector<ll> &v1, int v, int tl, int tr){
         if(tl==tr)    st[v].sum=v1[tl];     //  check
         else{
@@ -24,8 +28,7 @@ struct LazySegmentTree{
     }
     void prop(int v, int tl, int tr){
         if(st[v].mark){
-            st[v].sum=(tr-tl+1)*st[v].change;
-            // check which opeartion is to be performed
+            st[v].sum=(tr-tl+1)*st[v].change; // check which opeartion is to be performed
             if(tl!=tr){
                 st[(v<<1)].change=st[(v<<1)+1].change=st[v].change;
                 st[(v<<1)].mark=st[(v<<1)+1].mark=1;
@@ -34,14 +37,13 @@ struct LazySegmentTree{
             st[v].change=st[v].mark=0;
         }
         if(st[v].lazy!=0){
-            st[v].sum+=(tr-tl+1)*st[v].lazy;
-            // check which opeartion is to be performed
+            st[v].sum+=(tr-tl+1)*st[v].lazy; // check which opeartion is to be performed
             if(tl!=tr){
                 st[(v<<1)].lazy+=st[v].lazy;
                 st[(v<<1)+1].lazy+=st[v].lazy;   
             }
             st[v].lazy=0;
-            // if st[v].lazy is != 0 at any point, it means from that vertex onwards we have to make updations
+// if st[v].lazy is != 0 at any point, it means from that vertex onwards we have to make updations
         }
     }
     ll query(int v, int tl, int tr, int l, int r){
@@ -53,9 +55,11 @@ struct LazySegmentTree{
     }
     void update_many(int v, int tl, int tr, int l, int r, ll newVal){
         prop(v,tl,tr);    
-        if(tr<l || r<tl)return;
+        if(tr<l || r<tl)    return;
         if(l==tl && r==tr){
-            st[v].lazy+=newVal; prop(v,tl,tr); return;
+            st[v].lazy+=newVal;
+            prop(v,tl,tr);
+            return;
         }else{
             int mid=((tl+tr)>>1);
             update_many( (v<<1), tl, mid, l, min(r,mid), newVal);
@@ -65,10 +69,11 @@ struct LazySegmentTree{
     }
     void change_many(int v, int tl, int tr, int l, int r, ll newVal){
         prop(v,tl,tr);
-        if(tr<l || r<tl) return;
+        if(tr<l || r<tl)    return;
         if(l==tl && r==tr){
-            st[v].lazy=0, st[v].mark=1, st[v].change=newVal;
-            prop(v,tl,tr); return;
+            st[v].lazy=0,st[v].mark=1,st[v].change=newVal;
+            prop(v,tl,tr);
+            return;
         }else{
             int mid=((tl+tr)>>1);
             change_many( (v<<1), tl, mid, l, min(r,mid), newVal);
@@ -79,8 +84,7 @@ struct LazySegmentTree{
 };
  
 struct Node{
-    ll sum,lazy;
-    ll change;
+    ll sum,lazy,change;
     bool mark;
 };
 LazySegmentTree<Node> lazyseg;
