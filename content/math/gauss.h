@@ -9,44 +9,37 @@
 
 #pragma once
 
-template<typename T>
-int gauss (vector < vector<T> > a, vector<T> & ans) {
-    int n = (int) a.size();
-    int m = (int) a[0].size() - 1;
- 
-    vector<int> where (m, -1);
-    for (int col=0, row=0; col<m && row<n; ++col) {
-        int sel = row;
-        for (int i=row; i<n; ++i){
-            if ((a[i][col].val) > (a[sel][col].val))sel = i;
+struct Basis {
+    int bits = 30;
+    array<int, 30> basis;
+    Basis(){
+      for(int i=0;i<bits;i++){
+          basis[i]=0;
+      }
+    }
+    void add(int x) {
+        for (int i = bits-1; i >= 0 && x > 0; --i) {
+            if (basis[i]) x = min(x, x ^ basis[i]);
+            else {basis[i] = x; x = 0;}
         }
-        if ((a[sel][col]) == 0)continue;
-        for (int i=col; i<=m; ++i){
-            swap (a[sel][i], a[row][i]);
+    }
+    void merge(const Basis &other) {
+        for (int i = bits-1; i >= 0; --i) {
+            if (!other.basis[i]) break;
+            add(other.basis[i]);
         }
-        where[col] = row;
- 
-        for (int i=0; i<n; ++i){
-            if (i != row) {
-                T c = a[i][col] / a[row][col];
-                for (int j=col; j<=m; ++j){
-                    a[i][j] -= a[row][j] * c;
-                }
-            }
-        }    
-        ++row;
     }
-    for (int i=0; i<m; ++i){
-        if (where[i] != -1)ans[i] = a[where[i]][m] / a[where[i]][i];
+    int getmax() {
+        int ret = 0;
+        for (int i = bits-1; i >= 0; --i) {
+            ret = max(ret, ret ^ basis[i]);
+        }
+        return ret;
     }
-    for (int i=0; i<n; ++i) {
-        T sum = 0;
-        for (int j=0; j<m; ++j)sum += ans[j] * a[i][j];
-        if ((sum - a[i][m])  != 0 )return 0;  // No solution
+    bool isPossible(int k) const {
+        for (int i = bits-1; i >= 0; --i) {
+            k = min(k, k ^ basis[i]);
+        }
+        return k == 0;
     }
- 
-    for (int i=0; i<m; ++i){
-        if (where[i] == -1)return 2;  // infinite solutions
-    }    
-    return 1; // unique solution
-}
+};
