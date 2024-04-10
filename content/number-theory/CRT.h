@@ -7,22 +7,22 @@
  * Status: tested
  */
 
-#pragma once
-
-struct Cng {
-    ll a, m;
+struct Congruence {
+    long long a, m;
 };
 
-ll crt (vector<Cng> const& cngs) {
-    ll M = 1;
-    for (auto cng : cngs) M *= cng.m;
-
-    ll z = 0;
-    for (auto const& cng : cngs) {
-        ll a_i = cng.a;
-        ll M_i = M / cng.m;
-        ll N_i = mod_inv(M_i, cng.m);
-        z = (z + a_i * M_i % M * N_i) % M;
+long long chinese_remainder_theorem(vector<Congruence> const& congruences) {
+    long long M = 1, solution = 0;
+    for (auto const& congruence : congruences) {
+        M *= congruence.m;
     }
-    return z;
+    for (auto const& congruence : congruences) {
+        long long a_i = congruence.a, M_i = M / congruence.m;
+        long long N_i = mod_inv(M_i, congruence.m);
+        solution = (solution + a_i * M_i % M * N_i) % M;
+    }
+    return solution;
 }
+
+// NOTE : When m1, m2, ..... are not coprime, we take $M = lcm(m_1, m_2, ,...)$ and we break $a = a_i (mod m_i)$ into
+// $a = a_i (mod (p_j)^(n_j))$ for all prime factors $p_j$ of $m_i$.   and then proceed similarly.
