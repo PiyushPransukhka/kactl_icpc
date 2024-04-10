@@ -4,7 +4,7 @@
  * License: CC0
  * Source: self
  * Description: Lazy segtree
- * Time: O(\log N) per query 
+ * Time: $O(\log N)$ per query
  * Status: tested
  */
 
