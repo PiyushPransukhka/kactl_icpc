@@ -36,7 +36,7 @@ int find_primitive_root(int p) {
     }
     return -1;
 }
-// g is a primitive root modulo n if and only if he smallest number k for which $ g^k = 1 (mod n) $ is equal  to phi(n).
+// g is a primitive root modulo n if and only if the smallest number k for which $ g^k = 1 (mod n) $ is equal to phi(n).
 // Primitive root modulo n exists if and only if:
 // - n  is 1, 2, 4, or
 // - n is power of an odd prime number  $(n = p^k)$, or
