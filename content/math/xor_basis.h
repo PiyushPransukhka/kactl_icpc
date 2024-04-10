@@ -12,13 +12,11 @@
 struct Basis {
     int bits = 30;
     array<int, 30> basis;
- 
     Basis(){
       for(int i=0;i<bits;i++){
           basis[i]=0;
       }
     }
- 
     void add(int x) {
         for (int i = bits-1; i >= 0 && x > 0; --i) {
             if (basis[i]) x = min(x, x ^ basis[i]);
