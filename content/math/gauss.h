@@ -4,9 +4,10 @@
  * License: CC0
  * Source: self
  * Description: Gauss elimination
- * Time : O(min(n,m) \cdot nm)
  * Status: tested
  */
+
+#pragma once
 
 template<typename T>
 int gauss (vector < vector<T> > a, vector<T> & ans) {
