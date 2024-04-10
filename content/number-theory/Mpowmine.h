@@ -10,7 +10,7 @@
 #pragma once
 
 constexpr ll mpow (ll a, uint64_t p, int mod) {
-    ll res = 1;
+    ll res = 1; a %= mod;
     while (p > 0) {
         if (p & 1) res = res * a % mod;
         a = a * a % mod, p >>= 1;

@@ -1,23 +1,31 @@
 /**
- * Author: Simon Lindholm
- * Date: 2019-05-22
+ * Author: piyush_pransukhka
+ * Date: 2024-04-09
  * License: CC0
- * Description: Chinese Remainder Theorem.
- *
- * \texttt{crt(a, m, b, n)} computes $x$ such that $x\equiv a \pmod m$, $x\equiv b \pmod n$.
- * If $|a| < m$ and $|b| < n$, $x$ will obey $0 \le x < \text{lcm}(m, n)$.
- * Assumes $mn < 2^{62}$.
- * Time: $\log(n)$
- * Status: Works
+ * Source: self
+ * Description: CRT
+ * Status: tested
  */
+
 #pragma once
 
-#include "euclid.h"
+struct Cng {
+    ll a, m;
+};
 
-ll crt(ll a, ll m, ll b, ll n) {
-	if (n > m) swap(a, b), swap(m, n);
-	ll x, y, g = euclid(m, n, x, y);
-	assert((a - b) % g == 0); // else no solution
-	x = (b - a) % n * x % n / g * m + a;
-	return x < 0 ? x + m*n/g : x;
+ll crt (vector<Cng> const& cngs) {
+    ll M = 1;
+    for (auto cng : cngs) M *= cng.m;
+
+    ll z = 0;
+    for (auto const& cng : cngs) {
+        ll a_i = cng.a;
+        ll M_i = M / cng.m;
+        ll N_i = mod_inv(M_i, cng.m);
+        z = (z + a_i * M_i % M * N_i) % M;
+    }
+    return z;
 }
+
+// NOTE : When $m_1, m_2, \dots$ are not coprime, we take $M = lcm(m_1, m_2,\dots)$ and break $a = a_i (mod m_i)$ into
+// $a = a_i (mod p_j^n_j)$ for all prime factors $p_j$ of $m_i$ and then proceed similarly.

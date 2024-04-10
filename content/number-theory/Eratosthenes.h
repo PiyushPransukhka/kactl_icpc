@@ -1,22 +1,38 @@
 /**
- * Author: Håkan Terelius
- * Date: 2009-08-26
+ * Author: koderkushy
+ * Date: 2024-04-08
  * License: CC0
- * Source: http://en.wikipedia.org/wiki/Sieve_of_Eratosthenes
- * Description: Prime sieve for generating all primes up to a certain limit. isprime$[i]$ is true iff $i$ is a prime.
- * Time: lim=100'000'000 $\approx$ 0.8 s. Runs 30\% faster if only odd indices are stored.
+ * Description: Prime sieve for generating all primes up to a certain limit.
  * Status: Tested
  */
 #pragma once
 
-const int MAX_PR = 5'000'000;
-bitset<MAX_PR> isprime;
-vi eratosthenesSieve(int lim) {
-	isprime.set(); isprime[0] = isprime[1] = 0;
-	for (int i = 4; i < lim; i += 2) isprime[i] = 0;
-	for (int i = 3; i*i < lim; i += 2) if (isprime[i])
-		for (int j = i*i; j < lim; j += i*2) isprime[j] = 0;
-	vi pr;
-	rep(i,2,lim) if (isprime[i]) pr.push_back(i);
-	return pr;
+constexpr size_t MX_PR = 1 << 20;
+vector<int> primes;
+bitset<MX_PR> ispr;
+auto primes_init () {
+    ispr[0] = ispr[1] = 1;
+    primes.reserve(int(MX_PR / log(MX_PR)));
+    for (uint64_t i = 2; i*i < MX_PR; ++i) if (!ispr[i])
+        for (uint64_t j = i*i; j < MX_PR; j += i)
+            ispr[j] = 1;
+    for (int i = 0; i != MX_PR; ++i)
+        if (!ispr[i]) primes.push_back(i);
+}
+
+vector<int> lpf, mul, primes;
+auto lpf_init (const int N = 1 << 24) {
+    lpf = mul = vector(N, 0);
+    primes.reserve(N / max(1, int(log(N))));
+    for (int i = 2; i != N; ++i) {
+        if (lpf[i] == 0)
+            lpf[i] = i, mul[i] = 1,
+            primes.push_back(i);
+        for (int p: primes) {
+            if (p > lpf[i] or p * i > N)
+                break;
+            lpf[p * i] = p;
+            mul[p * i] = 1 + (p == lpf[i]? mul[i]: 0);
+        }
+    }
 }
