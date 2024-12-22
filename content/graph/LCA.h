@@ -1,36 +1,44 @@
 /**
- * Author: chilli, pajenegod
- * Date: 2020-02-20
+ * Author: kingmessi
+ * Date: 2024-12-21
  * License: CC0
- * Source: Folklore
- * Description: Data structure for computing lowest common ancestors in a tree
- * (with 0 as root). C should be an adjacency list of the tree, either directed
- * or undirected.
- * Time: $O(N \log N + Q)$
- * Status: stress-tested
+ * Source: self
+ * Description: binary lifting, computes lca
+ * Time: O(\log N) per query
+ * Status: tested
  */
-#pragma once
 
-#include "../data-structures/RMQ.h"
+const int N = 2e5+5;
+int depth[N],visited[N],up[N][20];
+vi adj[N];vpii bkedge;
 
-struct LCA {
-	int T = 0;
-	vi time, path, ret;
-	RMQ<int> rmq;
 
-	LCA(vector<vi>& C) : time(sz(C)), rmq((dfs(C,0,-1), ret)) {}
-	void dfs(vector<vi>& C, int v, int par) {
-		time[v] = T++;
-		for (int y : C[v]) if (y != par) {
-			path.push_back(v), ret.push_back(time[v]);
-			dfs(C, y, v);
-		}
-	}
+void dfs(int v) {
+    visited[v]=true;
+    rep(i,1,20)if(up[v][i-1]!=-1)up[v][i] = up[up[v][i-1]][i-1];
+    for(int x : adj[v]) {
+        if(!visited[x]) { 
+            depth[x] = depth[up[x][0] = v]+1;
+            dfs(x);
+        }
+        else if(x!=up[v][0] && depth[v]>depth[x])bkedge.pb({v,x});
+    }
+}
 
-	int lca(int a, int b) {
-		if (a == b) return a;
-		tie(a, b) = minmax(time[a], time[b]);
-		return path[rmq.query(a, b)];
-	}
-	//dist(a,b){return depth[a] + depth[b] - 2*depth[lca(a,b)];}
-};
+int jump(int x, int d) {
+    rep(i,0,20){
+        if((d >> i) & 1)
+            {if(x==-1)break;x = up[x][i];}
+    }return x;
+}
+
+int LCA(int a, int b) {
+    if(depth[a] < depth[b]) swap(a, b);
+    a = jump(a, depth[a] - depth[b]);
+    if(a == b) return a;
+    rrep(i,19,0){
+        int aT = up[a][i], bT = up[b][i];
+        if(aT != bT) a = aT, b = bT;
+    }
+    return up[a][0];
+}
