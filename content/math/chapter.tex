@@ -6,41 +6,18 @@
 	\kactlimport{gauss.h}
 	\kactlimport{xorbasis.h}
 
-\section{Equations}
-% \[ax^2+bx+c=0 \Rightarrow x = \frac{-b\pm\sqrt{b^2-4ac}}{2a}\]
-
-% The extremum is given by $x = -b/2a$.
-
-\[\begin{aligned}ax+by=e\\cx+dy=f\end{aligned}
-\Rightarrow
-\begin{aligned}x=\dfrac{ed-bf}{ad-bc}\\y=\dfrac{af-ec}{ad-bc}\end{aligned}\]
-
-In general, given an equation $Ax = b$, the solution to a variable $x_i$ is given by
-\[x_i = \frac{\det A_i'}{\det A} \]
-where $A_i'$ is $A$ with the $i$'th column replaced by $b$.
-
-\section{Recurrences}
-If $a_n = c_1 a_{n-1} + \dots + c_k a_{n-k}$, and $r_1, \dots, r_k$ are distinct roots of $x^k - c_1 x^{k-1} - \dots - c_k$, there are $d_1, \dots, d_k$ s.t.
-\[a_n = d_1r_1^n + \dots + d_kr_k^n. \]
-Non-distinct roots $r$ become polynomial factors, e.g. $a_n = (d_1n + d_2)r^n$.
 
 \section{Trigonometry}
-% \begin{align*}
-% \sin(A+B)&{}=\sin A\cos B+\cos A\sin B\\
-% \cos(A+B)&{}=\cos A\cos B-\sin A\sin B\\
-% \end{align*}
 \begin{align*}
-% \tan(A+B)&{}=\dfrac{\tan A+\tan B}{1-\tan A\tan B}\\
+\sin(A+B)&{}=\sin A\cos B+\cos A\sin B\\
+\cos(A+B)&{}=\cos A\cos B-\sin A\sin B\\
+\end{align*}
+\begin{align*}
+\tan(A+B)&{}=\dfrac{\tan A+\tan B}{1-\tan A\tan B}\\
 \sin A+\sin B&{}=2\sin\dfrac{A+B}{2}\cos\dfrac{A-B}{2}\\
 \cos A+\cos B&{}=2\cos\dfrac{A+B}{2}\cos\dfrac{A-B}{2}
 \end{align*}
 \[ (a+b)\tan(A-B)/2{}=(a-b)\tan(A+B)/2 \]
-Where $a, b$ are lengths of sides opposite angles $A, B$.
-\begin{align*}
-	a\cos x+b\sin x&=r\cos(x-\phi)\\
-	% a\sin x+b\cos x&=r\sin(x+\phi)
-\end{align*}
-where $r=\sqrt{a^2+b^2}, \phi=\operatorname{atan2}(b,a)$.
 
 \section{Geometry}
 
@@ -57,10 +34,6 @@ Law of cosines: $a^2=b^2+c^2-2bc\cos\alpha$\\
 Law of tangents: $\dfrac{a+b}{a-b}=\dfrac{\tan\dfrac{\alpha+\beta}{2}}{\tan\dfrac{\alpha-\beta}{2}}$\\
 
 \subsection{Quadrilaterals}
-With side lengths $a,b,c,d$, diagonals $e, f$, diagonals angle $\theta$, area $A$ and
-magic flux $F=b^2+d^2-a^2-c^2$:
-
-\[ 4A = 2ef \cdot \sin\theta = F\tan\theta = \sqrt{4e^2f^2-F^2} \]
 
  For cyclic quadrilaterals the sum of opposite angles is $180^\circ$,
 $ef = ac + bd$, and $A = \sqrt{(p-a)(p-b)(p-c)(p-d)}$.
@@ -103,6 +76,7 @@ $$\sin x = x-\frac{x^3}{3!}+\frac{x^5}{5!}-\frac{x^7}{7!}+\dots,\,(-\infty<x<\in
 $$\cos x = 1-\frac{x^2}{2!}+\frac{x^4}{4!}-\frac{x^6}{6!}+\dots,\,(-\infty<x<\infty)$$
 
 \section{Lagrange Interpolation}
+A Lagrange polynomial is a polynomial that interpolates a given set of data, and has the lowest degree possible. It is written as \(L(x)\) and has the property that \(L(x_{i})=y_{i}\) for every point in the data set.
 For a set of nodes $\{x_0, x_1, \dots x_k\}$ the Lagrange basis $\{l_0, l_1, \dots l_k\}$ is given as
 $$l_j(x) = \prod_{i \neq j} \dfrac{x-x_i}{x_j-x_i}$$
 The Lagrange interpolating polynomial corresponding to the values $\{y_0, y_1, \dots y_k\}$ is given as

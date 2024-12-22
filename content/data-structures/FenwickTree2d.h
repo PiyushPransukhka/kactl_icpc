@@ -1,36 +1,41 @@
 /**
- * Author: Simon Lindholm
- * Date: 2017-05-11
+ * Author: Piyush Pransukhka
+ * Date: 2024-12-22
  * License: CC0
- * Source: folklore
- * Description: Computes sums a[i,j] for all i<I, j<J, and increases single elements a[i,j].
- *  Requires that the elements to be updated are known in advance (call fakeUpdate() before init()).
- * Time: $O(\log^2 N)$. (Use persistent segment trees for $O(\log N)$.)
- * Status: stress-tested
+ * Source: self
+ * Description: 2-d range queries and point updates (0-indexed)
+ * Time: $O(\log N \log M)$. (Use persistent segment trees for $O(\log N)$.)
+ * Status: tested
  */
-#pragma once
 
-#include "FenwickTree.h"
+template <typename T> 
+struct BIT2D {
+  const int n, m;
+  vector<vector<T>> bit;
 
-struct FT2 {
-	vector<vi> ys; vector<FT> ft;
-	FT2(int limx) : ys(limx) {}
-	void fakeUpdate(int x, int y) {
-		for (; x < sz(ys); x |= x + 1) ys[x].push_back(y);
-	}
-	void init() {
-		for (vi& v : ys) sort(all(v)), ft.emplace_back(sz(v));
-	}
-	int ind(int x, int y) {
-		return (int)(lower_bound(all(ys[x]), y) - ys[x].begin()); }
-	void update(int x, int y, ll dif) {
-		for (; x < sz(ys); x |= x + 1)
-			ft[x].update(ind(x, y), dif);
-	}
-	ll query(int x, int y) {
-		ll sum = 0;
-		for (; x; x &= x - 1)
-			sum += ft[x-1].query(ind(x-1, y));
-		return sum;
-	}
+  BIT2D(int n, int m) : n(n), m(m), bit(n + 1, vector<T>(m + 1)) {}
+
+  /** adds val to the point (r, c) */
+  void add(int r, int c, T val) {
+    r++, c++;
+    for (; r <= n; r += r & -r) {
+      for (int i = c; i <= m; i += i & -i) { bit[r][i] += val; }
+    }
+  }
+
+  /** returns sum of points with row in [0, r] and column in [0, c] */
+  T rect_sum(int r, int c) {
+    r++, c++;
+    T sum = 0;
+    for (; r > 0; r -= r & -r) {
+      for (int i = c; i > 0; i -= i & -i) { sum += bit[r][i]; }
+    }
+    return sum;
+  }
+
+  /** returns sum of points with row in [r1, r2] and column in [c1, c2] */
+  T rect_sum(int r1, int c1, int r2, int c2) {
+    return rect_sum(r2, c2) - rect_sum(r2, c1 - 1) - rect_sum(r1 - 1, c2) +
+           rect_sum(r1 - 1, c1 - 1);
+  }
 };

@@ -3,7 +3,8 @@
  * Date: 2024-04-09
  * License: CC0
  * Source: self
- * Description: Gauss elimination
+ * Description: Gauss elimination for solving linear system of equations.
+ * Time: O(min(n,m)\cdot n \cdot m)
  * Status: tested
  */
 
@@ -20,7 +21,7 @@ int gauss (vector < vector<T> > a, vector<T> & ans) {
         for (int i=row; i<n; ++i){
             if ((a[i][col].val) > (a[sel][col].val))sel = i;
         }
-        if ((a[sel][col]) == 0)continue;
+        if ((a[sel][col]) == 0)continue; // abs(a[sel][col]) < eps, in case of doubles
         for (int i=col; i<=m; ++i){
             swap (a[sel][i], a[row][i]);
         }

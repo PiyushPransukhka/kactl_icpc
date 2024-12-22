@@ -1,31 +1,46 @@
 /**
- * Author: Lucian Bicsi
- * Date: 2017-10-31
+ * Author: Piyush Pransukhka
+ * Date: 2024-12-22
  * License: CC0
- * Source: folklore
- * Description: Zero-indexed max-tree. Bounds are inclusive to the left and exclusive to the right.
- * Can be changed by modifying T, f and unit.
+ * Source: self
+ * Description: Segment tree
  * Time: O(\log N)
- * Status: stress-tested
+ * Status: tested
  */
-#pragma once
 
-struct Tree {
-	typedef int T;
-	static constexpr T unit = INT_MIN;
-	T f(T a, T b) { return max(a, b); } // (any associative fn)
-	vector<T> s; int n;
-	Tree(int n = 0, T def = unit) : s(2*n, def), n(n) {}
-	void update(int pos, T val) {
-		for (s[pos += n] = val; pos /= 2;)
-			s[pos] = f(s[pos * 2], s[pos * 2 + 1]);
-	}
-	T query(int b, int e) { // query [b, e)
-		T ra = unit, rb = unit;
-		for (b += n, e += n; b < e; b /= 2, e /= 2) {
-			if (b % 2) ra = f(ra, s[b++]);
-			if (e % 2) rb = f(s[--e], rb);
-		}
-		return f(ra, rb);
-	}
-};
+int t[4*N]; // N is the number of elements
+
+void build(int a[], int v, int tl, int tr) {
+    if (tl == tr) {
+        t[v] = a[tl];
+    } else {
+        int tm = (tl + tr) / 2;
+        build(a, v*2, tl, tm);
+        build(a, v*2+1, tm+1, tr);
+        t[v] = t[v*2] + t[v*2+1];
+    }
+}
+
+int sum(int v, int tl, int tr, int l, int r) {
+    if (l > r) 
+        return 0;
+    if (l == tl && r == tr) {
+        return t[v];
+    }
+    int tm = (tl + tr) / 2;
+    return sum(v*2, tl, tm, l, min(r, tm))
+           + sum(v*2+1, tm+1, tr, max(l, tm+1), r);
+}
+
+void update(int v, int tl, int tr, int pos, int new_val) {
+    if (tl == tr) {
+        t[v] = new_val;
+    } else {
+        int tm = (tl + tr) / 2;
+        if (pos <= tm)
+            update(v*2, tl, tm, pos, new_val);
+        else
+            update(v*2+1, tm+1, tr, pos, new_val);
+        t[v] = t[v*2] + t[v*2+1];
+    }
+}

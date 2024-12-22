@@ -3,7 +3,7 @@
  * Date: 2024-04-09
  * License: CC0
  * Source: self
- * Description: CRT
+ * Description: Solves system of equations $ x = a_{i} mod {m_i} $
  * Status: tested
  */
 
