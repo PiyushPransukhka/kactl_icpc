@@ -1,67 +1,76 @@
 /**
- * Author: someone on Codeforces
- * Date: 2017-03-14
- * Source: folklore
- * Description: A short self-balancing tree. It acts as a
- *  sequential container with log-time splits/joins, and
- *  is easy to augment with additional data.
- * Time: $O(\log N)$
- * Status: stress-tested
+ * Author: kingmessi
+ * Date: 2024-12-23
+ * License: CC0
+ * Source: self
+ * Description: implicit treap
+ * Time: O(\log N) per operation
+ * Status: tested
  */
-#pragma once
 
-struct Node {
-	Node *l = 0, *r = 0;
-	int val, y, c = 1;
-	Node(int val) : val(val), y(rand()) {}
-	void recalc();
+mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
+using pt = struct tnode*;
+pt root = NULL;
+struct tnode {
+    int pri, val; pt c[2]; // essential
+    int sz; ll sum; // for range queries
+    bool flip = 0; // lazy update
+    tnode(int _val) {
+        pri = rng(); sum = val = _val;
+        sz = 1; c[0] = c[1] = nullptr;
+    }
+    ~tnode() { rep(i,0,2) delete c[i]; } /// assume no sharing of data
 };
-
-int cnt(Node* n) { return n ? n->c : 0; }
-void Node::recalc() { c = cnt(l) + cnt(r) + 1; }
-
-template<class F> void each(Node* n, F f) {
-	if (n) { each(n->l, f); f(n->val); each(n->r, f); }
+int getsz(pt x) { return x?x->sz:0; }
+ll getsum(pt x) { return x?x->sum:0; }
+void prop(pt x) { // lazy propagation
+    if (!x || !x->flip) return;   
+    swap(x->c[0],x->c[1]);
+    x->flip = 0; rep(i,0,2) if (x->c[i]) x->c[i]->flip ^= 1;
 }
-
-pair<Node*, Node*> split(Node* n, int k) {
-	if (!n) return {};
-	if (cnt(n->l) >= k) { // "n->val >= k" for lower_bound(k)
-		auto pa = split(n->l, k);
-		n->l = pa.second;
-		n->recalc();
-		return {pa.first, n};
-	} else {
-		auto pa = split(n->r, k - cnt(n->l) - 1); // and just "k"
-		n->r = pa.first;
-		n->recalc();
-		return {n, pa.second};
-	}
+pt calc(pt x) {
+    pt a = x->c[0], b = x->c[1];
+    // assert(!x->flip); 
+    prop(a), prop(b);
+    x->sz = 1+getsz(a)+getsz(b);
+    x->sum = x->val+getsum(a)+getsum(b);
+    return x;
 }
-
-Node* merge(Node* l, Node* r) {
-	if (!l) return r;
-	if (!r) return l;
-	if (l->y > r->y) {
-		l->r = merge(l->r, r);
-		l->recalc();
-		return l;
-	} else {
-		r->l = merge(l, r->l);
-		r->recalc();
-		return r;
-	}
+void tour(pt x, vi& v) { // print values of nodes, 
+    if (!x) return; // inorder traversal
+    prop(x); tour(x->c[0],v); v.pb(x->val); tour(x->c[1],v);
 }
-
-Node* ins(Node* t, Node* n, int pos) {
-	auto pa = split(t, pos);
-	return merge(merge(pa.first, n), pa.second);
+pair<pt,pt> splitsz(pt t, int sz) { // sz nodes go to left used for implicit
+    if (!t) return {t,t};
+    prop(t);
+    if (getsz(t->c[0]) >= sz) {
+        auto p = splitsz(t->c[0],sz); t->c[0] = p.ss;
+        return {p.ff,calc(t)};
+    } else {
+        auto p=splitsz(t->c[1],sz-getsz(t->c[0])-1); t->c[1]=p.ff;
+        return {calc(t),p.ss};
+    }
 }
-
-// Example application: move the range [l, r) to index k
-void move(Node*& t, int l, int r, int k) {
-	Node *a, *b, *c;
-	tie(a,b) = split(t, l); tie(b,c) = split(b, r - l);
-	if (k <= l) t = merge(ins(a, b, k), c);
-	else t = merge(a, ins(c, b, k - r));
+pt merge(pt l, pt r) { //  keys in l < keys in r
+    if (!l || !r) return l?:r;
+    prop(l), prop(r); pt t;
+    if (l->pri > r->pri) l->c[1] = merge(l->c[1],r), t = l;
+    else r->c[0] = merge(l,r->c[0]), t = r;
+    return calc(t);
 }
+pt ins(pt x, int v,int idx) { // insert v at idx(0 based indexing)
+    auto a = splitsz(x,idx);
+    return merge(a.ff,merge(new tnode(v),a.ss)); }
+pt del(pt x, int idx) { // delete v at idx(0 based indexing)
+    auto a = splitsz(x,idx), b = splitsz(a.ss,1);
+    return merge(a.ff,b.ss); }
+int find_kidx(pt t,int idx){//idx is 1 based
+    assert(getsz(t) >= idx);
+    prop(t);
+    if(getsz(t->c[0]) == idx-1)return t->val;
+    else if(getsz(t->c[0]) < idx)return find_kidx(t->c[1],idx-getsz(t->c[0])-1);
+    else return find_kidx(t->c[0],idx);
+}
+//root = ins(root,a[i],i)
+//auto a = splitsz(root,l);auto b = splitsz(a.ss,r-l);ll ans = b.ff->sum;
+//root = merge(a.ff,merge(b.ff,b.ss)); sum l to r
