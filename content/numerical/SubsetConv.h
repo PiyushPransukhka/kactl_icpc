@@ -3,13 +3,17 @@
  * Date: 2024-04-08
  * License: CC0
  * Source: self
- * Description: Subset convolution.
+ * Description: Subset convolution. $\displaystyle c[k] = \sum\nolimits_{k = i | j, i \& j = 0} a[i] \cdot b[j]$.
+ * The size of $a$ and $b$ must be same and a power of two.
+ * Time: $O(N (\log N) ^ 2)$ , works for $n = 2 ^ {20}$ under 2 sec.
  * Status: tested
  */
 
 #pragma once
 
+typedef long long ll;
 constexpr int MOD = 998244353;
+
 auto sos (vector<ll>& a, const bool invert = false) {
     const size_t n = size(a);
     assert(__builtin_popcount(n) == 1);
@@ -19,6 +23,8 @@ auto sos (vector<ll>& a, const bool invert = false) {
                 (a[ms | i] += (invert? MOD-a[ms]: a[ms])),
                 a[ms | i] -= (a[ms | i] >= MOD ? MOD: 0);
 }
+
+// a contains the convoluted result
 void subset_conv (vector<ll>& a, const vector<ll>& b) {
     const int n = size(a);
     assert(__builtin_popcount(n) == 1 and size(b) == n);
