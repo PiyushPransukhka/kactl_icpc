@@ -19,3 +19,10 @@ signed main(){
     return 0;
     // -Wl,--stack=2147483648
 }
+
+{
+  "cmd" : ["g++ -std=c++17 $file_name -o $file_base_name && timeout 8s ./$file_base_name <inputf.in> outputf.in"], 
+  "selector" : "source.cpp",
+  "shell": true,
+  "working_dir" : "$file_path"
+}

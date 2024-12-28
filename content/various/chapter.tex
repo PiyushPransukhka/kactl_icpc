@@ -13,12 +13,16 @@
 \section{Dynamic programming}
 	\kactlimport{KnuthDP.h}
 	\kactlimport{DivideAndConquerDP.h}
+        \kactlimport{SlopeTrick.h}
 
 \section{Optimization tricks}
 	\subsection{Bit hacks}
 		\begin{itemize}
 			\item \verb@x & -x@ is the least bit in \texttt{x}.
 			\item \verb@c = x&-x, r = x+c; (((r^x) >> 2)/c) | r@ is the next number after \texttt{x} with the same number of bits set.
+                        \item \texttt{\_\_builtin\_popcountll(x)} \quad \text{returns the number of set bits in } x
+                        \item \texttt{\_\_builtin\_clz(x)} \quad \text{counts the number of leading zeros in } x
+                        \item \texttt{\_\_builtin\_ctz(x)} \quad \text{counts the number of trailing zeros in } x
 		\end{itemize}
 	%\kactlimport{FastMod.h}
 	% \kactlimport{FastInput.h}

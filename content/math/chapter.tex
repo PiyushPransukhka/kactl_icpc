@@ -91,7 +91,7 @@ $$B(x, y) = e^{y(e^x - 1)} = \sum_n \sum_k \left\{{n \atop k}\right\} \dfrac{x^n
 $$B_k(x) = [y^k]B(x, y) = \dfrac{(e^x - 1)^k}{k!}$$
 
 % \section{Probability theory}	
-% Let $X$ be a discrete random variable with probability $p_X(x)$ of assuming the value $x$. It will then have an expected value (mean) $\mu=\mathbb{E}(X)=\sum_xxp_X(x)$ and variance $\sigma^2=V(X)=\mathbb{E}(X^2)-(\mathbb{E}(X))^2=\sum_x(x-\mathbb{E}(X))^2p_X(x)$ where $\sigma$ is the standard deviation. If $X$ is instead continuous it will have a probability density function $f_X(x)$ and the sums above will instead be integrals with $p_X(x)$ replaced by $f_X(x)$.
+% Let $X$ be a discrete random variable with probability $p_X(x)$ of assuming the value $x$. It will then have an expected value (mean) %$\mu=\mathbb{E}(X)=\sum_xxp_X(x)$ and variance $\sigma^2=V(X)=\mathbb{E}(X^2)-(\mathbb{E}(X))^2=\sum_x(x-\mathbb{E}(X))^2p_X(x)$ where %$\sigma$ is the standard deviation. If $X$ is instead continuous it will have a probability density function $f_X(x)$ and the sums above %will instead be integrals with $p_X(x)$ replaced by $f_X(x)$.
 
 % Expectation is linear:
 % \[\mathbb{E}(aX+bY) = a\mathbb{E}(X)+b\mathbb{E}(Y)\]
@@ -115,7 +115,6 @@ $$B_k(x) = [y^k]B(x, y) = \dfrac{(e^x - 1)^k}{k!}$$
 % \[p(k)=e^{-\lambda}\frac{\lambda^k}{k!}, k=0,1,2,\dots\]
 % \[\mu=\lambda,\,\sigma^2=\lambda\]
 
-\subsection{Continuous distributions}
 
 % \subsubsection{Uniform distribution}
 % If the probability density function is constant between $a$ and $b$ and 0 elsewhere it is $\textrm{U}(a,b),\,a<b$.
@@ -135,11 +134,6 @@ $$B_k(x) = [y^k]B(x, y) = \dfrac{(e^x - 1)^k}{k!}$$
 % \end{array}\right.\]
 % \[\mu=\frac{1}{\lambda},\,\sigma^2=\frac{1}{\lambda^2}\]
 
-\subsubsection{Normal distribution}
-Most real random values with mean $\mu$ and variance $\sigma^2$ are well described by $\mathcal{N}(\mu,\sigma^2),\,\sigma>0$.
-\[ f(x) = \frac{1}{\sqrt{2\pi\sigma^2}}e^{-\frac{(x-\mu)^2}{2\sigma^2}} \]
-If $X_1 \sim \mathcal{N}(\mu_1,\sigma_1^2)$ and $X_2 \sim \mathcal{N}(\mu_2,\sigma_2^2)$ then
-\[ aX_1 + bX_2 + c \sim \mathcal{N}(\mu_1+\mu_2+c,a^2\sigma_1^2+b^2\sigma_2^2) \]
 
 % \section{Markov chains}
 % A \emph{Markov chain} is a discrete random process with the property that the next state depends only on the current state.
